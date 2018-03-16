@@ -39,15 +39,33 @@ double Node::GetBW() const
 Node::~Node()
 {}
 
-// Implement these functions  to post an event to the event queue in the event simulator
+// Implement these functions to post an event to the event queue in the event simulator
 // so that the corresponding node can recieve the ROUTING_MESSAGE_ARRIVAL event at the proper time
 void Node::SendToNeighbors(const RoutingMessage *m)
 {
+    // Send to each neighbor individually
+    deque <Node*> *neighbors = GetNeighbors();
+    deque <Node*>::iterator i;
+    for (i = neighbors->begin(); i != neighbors->end(); i++)
+    {
+        SendToNeighbor(*i, m);
+    }
 }
 
 void Node::SendToNeighbor(const Node *n, const RoutingMessage *m)
 {
-
+    const Link* temp_link = new Link(this->number, n->number, NULL, 0, 0);
+    Link* matching_link = context->FindMatchingLink(temp_link);
+    
+    if (matching_link != 0)
+    {
+        Event* new_event = new Event(context->GetTime() + matching_link->GetLatency(),
+                                     ROUTING_MESSAGE_ARRIVAL,
+                                     (void*)n,
+                                     (void*)m);
+        context->PostEvent(new_event);
+    }
+    delete temp_link;
 }
 
 deque<Node*> *Node::GetNeighbors()
@@ -108,7 +126,7 @@ ostream & Node::Print(ostream &os) const
 
 #if defined(LINKSTATE)
 
-
+//////// WRITE THESE ////////
 void Node::LinkHasBeenUpdated(const Link *l)
 {
   cerr << *this<<": Link Update: "<<*l<<endl;
@@ -147,6 +165,8 @@ ostream & Node::Print(ostream &os) const
 
 
 #if defined(DISTANCEVECTOR)
+
+//////// WRITE THESE ////////
 
 void Node::LinkHasBeenUpdated(const Link *l)
 {
