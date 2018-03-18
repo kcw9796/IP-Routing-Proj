@@ -38,9 +38,12 @@ class Table {
  public:
   map<unsigned,map<unsigned,next_lat> > lookup;
 
+  Table();
+  Table(const Table &rhs);
   void LinkInit(unsigned num, const Link *l);
-  // void ComputeDV(unsigned num);
-  // void GetDV(unsigned num);
+  bool ComputeDV(unsigned num, deque<Link*> *links);
+  map<unsigned,next_lat> GetDV(unsigned num);
+  void SetDV(unsigned num, map<unsigned,next_lat> dv);
   ostream & Print(ostream &os) const;
 };
 #endif

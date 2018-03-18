@@ -25,9 +25,14 @@ struct RoutingMessage {
 #endif
 
 #if defined(DISTANCEVECTOR)
+#include "table.h"
+
 struct RoutingMessage {
+  unsigned num;
+  map<unsigned, next_lat> dv;
 
   RoutingMessage();
+  RoutingMessage(unsigned num, map<unsigned, next_lat> dv);
   RoutingMessage(const RoutingMessage &rhs);
   RoutingMessage &operator=(const RoutingMessage &rhs);
 

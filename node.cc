@@ -154,16 +154,30 @@ void Node::LinkHasBeenUpdated(const Link *l)
   // send out routing mesages
   cerr << *this<<": Link Update: "<<*l<<endl;
 
-  this->lookup.LinkInit(this->GetNumber(),l);
-  this->lookup.Print(cout);
-  deque<Node*> *nodes = this->GetNeighbors();
-  // this->lookup.ComputeDV(this->GetNumber(),nodes);
-  // SendToNeighbors(new RoutingMessage(this->GetNumber(),this->lookup.GetDV(this->GetNumber())));
+  this->table.LinkInit(this->GetNumber(),l);
+  cout << "\nNODE: " << this->GetNumber() << endl;
+  this->table.Print(cout);
+  cout << endl;
+  deque<Link*> *links = this->context->GetOutgoingLinks(this);
+  bool change = this->table.ComputeDV(this->GetNumber(),links);
+  if(change) {
+    context->SendToNeighbors(this,new RoutingMessage(this->GetNumber(),this->table.GetDV(this->GetNumber())));
+    // SendToNeighbors(new RoutingMessage(this->GetNumber(),this->lookup.GetDV(this->GetNumber())));
+  }
 }
 
 
 void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
 {
+  this->table.SetDV(m->num,m->dv);
+  cout << "\nNODE: " << this->GetNumber() << endl;
+  this->table.Print(cout);
+  cout << endl;
+  deque<Link*> *links = this->context->GetOutgoingLinks(this);
+  bool change = this->table.ComputeDV(this->GetNumber(),links);
+  if(change) {
+    context->SendToNeighbors(this,new RoutingMessage(this->GetNumber(),this->table.GetDV(this->GetNumber())));
+  }
 
 }
 
@@ -175,10 +189,13 @@ void Node::TimeOut()
 
 Node *Node::GetNextHop(const Node *destination) const
 {
+
+  return NULL;
 }
 
 Table *Node::GetRoutingTable() const
 {
+  return new Table(this->table);
 }
 
 

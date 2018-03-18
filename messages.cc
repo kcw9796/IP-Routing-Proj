@@ -34,6 +34,11 @@ ostream &RoutingMessage::Print(ostream &os) const
   return os;
 }
 
+RoutingMessage::RoutingMessage(unsigned num, map<unsigned, next_lat> dv) {
+	this->num = num;
+	this->dv = dv;
+}
+
 RoutingMessage::RoutingMessage()
 {}
 
