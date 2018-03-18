@@ -4,8 +4,8 @@
 #if defined(GENERIC)
 ostream &RoutingMessage::Print(ostream &os) const
 {
-  os << "RoutingMessage()";
-  return os;
+    os << "RoutingMessage()";
+    return os;
 }
 #endif
 
@@ -14,15 +14,27 @@ ostream &RoutingMessage::Print(ostream &os) const
 
 ostream &RoutingMessage::Print(ostream &os) const
 {
-  return os;
+    os << "RoutingMessage (message_link = " << *message_link << ")";
+    return os;
 }
 
 RoutingMessage::RoutingMessage()
 {}
 
-
 RoutingMessage::RoutingMessage(const RoutingMessage &rhs)
-{}
+{
+    message_link = rhs.message_link;
+}
+
+RoutingMessage::RoutingMessage(const Link *l)
+{
+    this->message_link = l;
+}
+
+RoutingMessage &RoutingMessage::operator=(const RoutingMessage &rhs)
+{
+    return *(new(this) RoutingMessage(rhs));
+}
 
 #endif
 
@@ -31,7 +43,7 @@ RoutingMessage::RoutingMessage(const RoutingMessage &rhs)
 
 ostream &RoutingMessage::Print(ostream &os) const
 {
-  return os;
+    return os;
 }
 
 RoutingMessage::RoutingMessage()

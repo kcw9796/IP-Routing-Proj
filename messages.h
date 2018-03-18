@@ -8,30 +8,33 @@
 
 #if defined(GENERIC)
 struct RoutingMessage {
- public:
-  ostream & Print(ostream &os) const;
+public:
+    ostream & Print(ostream &os) const;
 };
 #endif
 
 #if defined(LINKSTATE)
-struct RoutingMessage {
-
-  RoutingMessage();
-  RoutingMessage(const RoutingMessage &rhs);
-  RoutingMessage &operator=(const RoutingMessage &rhs);
-
-  ostream & Print(ostream &os) const;
+struct RoutingMessage
+{
+    const Link* message_link;
+    
+    RoutingMessage();
+    RoutingMessage(const RoutingMessage &rhs);
+    RoutingMessage &operator=(const RoutingMessage &rhs);
+    RoutingMessage(const Link *l);
+    
+    ostream & Print(ostream &os) const;
 };
 #endif
 
 #if defined(DISTANCEVECTOR)
 struct RoutingMessage {
-
-  RoutingMessage();
-  RoutingMessage(const RoutingMessage &rhs);
-  RoutingMessage &operator=(const RoutingMessage &rhs);
-
-  ostream & Print(ostream &os) const;
+    
+    RoutingMessage();
+    RoutingMessage(const RoutingMessage &rhs);
+    RoutingMessage &operator=(const RoutingMessage &rhs);
+    
+    ostream & Print(ostream &os) const;
 };
 #endif
 
