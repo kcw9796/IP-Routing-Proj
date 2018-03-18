@@ -153,6 +153,12 @@ void Node::LinkHasBeenUpdated(const Link *l)
   // update our table
   // send out routing mesages
   cerr << *this<<": Link Update: "<<*l<<endl;
+
+  this->lookup.LinkInit(this->GetNumber(),l);
+  this->lookup.Print(cout);
+  deque<Node*> *nodes = this->GetNeighbors();
+  // this->lookup.ComputeDV(this->GetNumber(),nodes);
+  // SendToNeighbors(new RoutingMessage(this->GetNumber(),this->lookup.GetDV(this->GetNumber())));
 }
 
 
