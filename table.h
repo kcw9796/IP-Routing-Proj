@@ -44,7 +44,7 @@ class Table {
   bool ComputeDV(unsigned num, deque<Link*> *links);
   map<unsigned,next_lat> GetDV(unsigned num);
   void SetDV(unsigned num, map<unsigned,next_lat> dv);
-  unsigned GetNextHop(const unsigned num) const;
+  unsigned GetNextHop(const unsigned num, const unsigned dest) const;
   ostream & Print(ostream &os) const;
 };
 #endif

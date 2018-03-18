@@ -63,7 +63,7 @@ bool Table::ComputeDV(unsigned num, deque<Link*> *links) {
 			for(k=j->second.begin(); k!=j->second.end(); ++k) {
 				if(k->first != num) {
 					l = this->lookup[num].find(k->first);
-					if(l == this->lookup[num].end() || l->second.lat > k->second.lat + link_costs[j->first].lat) {
+					if(l == this->lookup[num].end() || (l->second.lat > k->second.lat + link_costs[j->first].lat && k->second.next != num)) {
 						nl.next = j->first;
 						nl.lat = k->second.lat + link_costs[j->first].lat;
 						this->lookup[num][k->first] = nl;
@@ -87,18 +87,16 @@ map<unsigned,next_lat> Table::GetDV(unsigned num) {
 	return lookup[num];
 }
 
-unsigned Table::GetNextHop(const unsigned num) const {
+unsigned Table::GetNextHop(const unsigned num, const unsigned dest) const {
 	map<unsigned,map<unsigned,next_lat> >::const_iterator i = this->lookup.find(num);
 	map<unsigned,next_lat>::const_iterator j;
 	if(i!=this->lookup.end()) {
-		j = i->find()
-	}
-	
-	for(i=this->lookup.begin(); i!=this->lookup.end(); ++i) {
-		for(j=i->second.begin(); j!=i->second.end(); ++j) {
-			os << "From:" << i->first << " To:" << j->first << " Through:" << j->second.next << " Lat:" << j->second.lat << endl;
+		j = i->second.find(dest);
+		if(j!=i->second.end()) {
+			return j->second.next;
 		}
 	}
+	return 9999;
 }
 
 ostream & Table::Print(ostream &os) const {

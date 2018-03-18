@@ -192,9 +192,9 @@ Node *Node::GetNextHop(const Node *destination) const
   cout << "\nNODE " << number << endl;
   cout << "ASKING FOR: " << destination->number << endl;
 
-  unsigned next_hop = table.GetNextHop(destination->number);
+  unsigned next_hop = table.GetNextHop(this->GetNumber(),destination->number);
   cout << "Returning: " << next_hop << endl;
-  return new Node(next_hop,context,0,0);
+  return (next_hop!=9999)? new Node(next_hop,context,0,0) : NULL;
 }
 
 Table *Node::GetRoutingTable() const
