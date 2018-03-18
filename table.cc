@@ -87,6 +87,20 @@ map<unsigned,next_lat> Table::GetDV(unsigned num) {
 	return lookup[num];
 }
 
+unsigned Table::GetNextHop(const unsigned num) const {
+	map<unsigned,map<unsigned,next_lat> >::const_iterator i = this->lookup.find(num);
+	map<unsigned,next_lat>::const_iterator j;
+	if(i!=this->lookup.end()) {
+		j = i->find()
+	}
+	
+	for(i=this->lookup.begin(); i!=this->lookup.end(); ++i) {
+		for(j=i->second.begin(); j!=i->second.end(); ++j) {
+			os << "From:" << i->first << " To:" << j->first << " Through:" << j->second.next << " Lat:" << j->second.lat << endl;
+		}
+	}
+}
+
 ostream & Table::Print(ostream &os) const {
 	map<unsigned,map<unsigned,next_lat> >::const_iterator i;
 	map<unsigned,next_lat>::const_iterator j;

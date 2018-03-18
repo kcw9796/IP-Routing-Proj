@@ -189,7 +189,12 @@ void Node::TimeOut()
 
 Node *Node::GetNextHop(const Node *destination) const
 {
-  return new Node(this->table.lookup[this->GetNumber()][destination->GetNumber()].next,0,0,0);
+  cout << "\nNODE " << number << endl;
+  cout << "ASKING FOR: " << destination->number << endl;
+
+  unsigned next_hop = table.GetNextHop(destination->number);
+  cout << "Returning: " << next_hop << endl;
+  return new Node(next_hop,context,0,0);
 }
 
 Table *Node::GetRoutingTable() const
