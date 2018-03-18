@@ -189,8 +189,7 @@ void Node::TimeOut()
 
 Node *Node::GetNextHop(const Node *destination) const
 {
-
-  return NULL;
+  return new Node(this->table.lookup[this->GetNumber()][destination->GetNumber()].next,0,0,0);
 }
 
 Table *Node::GetRoutingTable() const

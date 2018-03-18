@@ -46,6 +46,7 @@ void Table::SetDV(unsigned num, map<unsigned,next_lat> dv) {
 
 bool Table::ComputeDV(unsigned num, deque<Link*> *links) {
 	map<unsigned,next_lat> old_DV = GetDV(num);
+	SetDV(num,{});
 	deque<Link*>::iterator i;
 	next_lat nl;
 	for(i=links->begin(); i!=links->end(); ++i) {
@@ -53,6 +54,7 @@ bool Table::ComputeDV(unsigned num, deque<Link*> *links) {
 		nl.lat = (*i)->GetLatency();
 		this->lookup[num][nl.next] = nl; 
 	}
+	map<unsigned,next_lat> link_costs = GetDV(num);
 
 	map<unsigned,map<unsigned,next_lat> >::const_iterator j;
 	map<unsigned,next_lat>::const_iterator k,l;
@@ -61,8 +63,10 @@ bool Table::ComputeDV(unsigned num, deque<Link*> *links) {
 			for(k=j->second.begin(); k!=j->second.end(); ++k) {
 				if(k->first != num) {
 					l = this->lookup[num].find(k->first);
-					if(l == this->lookup[num].end() || l->second.lat > k->second.lat) {
-						this->lookup[num][k->first] = k->second;
+					if(l == this->lookup[num].end() || l->second.lat > k->second.lat + link_costs[j->first].lat) {
+						nl.next = j->first;
+						nl.lat = k->second.lat + link_costs[j->first].lat;
+						this->lookup[num][k->first] = nl;
 					}
 				}
 			}
