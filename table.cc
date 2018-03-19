@@ -41,6 +41,7 @@ void Table::UpdateAlgorithm()
     Dijkstra_Init(value, predecessor, remaining_nodes);
     
     value[current] = 0;  // distance to the beginning node is 0
+
     
     // main loop
     while(!remaining_nodes.empty())

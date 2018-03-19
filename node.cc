@@ -136,49 +136,6 @@ ostream & Node::Print(ostream &os) const
 //////// WRITE THESE ////////
 void Node::LinkHasBeenUpdated(const Link *l)
 {
-    cerr << *this<<": Link Update: "<<*l<<endl;
-    
-    
-}
-
-
-void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
-{
-    cerr << *this << " Routing Message: "<<*m;
-}
-
-void Node::TimeOut()
-{
-    cerr << *this << " got a timeout: ignored"<<endl;
-}
-
-Node *Node::GetNextHop(const Node *destination) const
-{
-    // WRITE
-    return 0;
-}
-
-Table *Node::GetRoutingTable() const
-{
-    // WRITE
-    return 0;
-}
-
-
-ostream & Node::Print(ostream &os) const
-{
-    os << "Node(number="<<number<<", lat="<<lat<<", bw="<<bw<<")";
-    return os;
-}
-#endif
-
-
-#if defined(DISTANCEVECTOR)
-
-//////// WRITE THESE ////////
-
-void Node::LinkHasBeenUpdated(const Link *l)
-{
     // cerr << *this << ": Link Update: " << *l << endl;
     
     // update our table and send out routing message
@@ -193,7 +150,7 @@ void Node::LinkHasBeenUpdated(const Link *l)
 
 void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
 {
-    LinkHasBeenUpdated(m->link); /////////////////// maybe change
+    LinkHasBeenUpdated(m->message_link);
 }
 
 void Node::TimeOut()
@@ -206,7 +163,7 @@ Node *Node::GetNextHop(const Node *destination) const
 {
     unsigned next_node;
     
-    next_node = lTable.GetNextHop_Table(destination->number);
+    next_node = lTable.info.GetNextHop_Table(destination->number);
     
     if (next_node != UNDEFINED)
     {
@@ -226,6 +183,46 @@ Table *Node::GetRoutingTable() const
 ostream & Node::Print(ostream &os) const
 {
     os << "Node(number=" << number << ", lat=" << lat << ", bw=" << bw;
+    return os;
+}
+#endif
+
+
+#if defined(DISTANCEVECTOR)
+
+//////// WRITE THESE ////////
+
+void Node::LinkHasBeenUpdated(const Link *l)
+{
+    // update our table
+    // send out routing mesages
+    cerr << *this<<": Link Update: "<<*l<<endl;
+}
+
+
+void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
+{
+    
+}
+
+void Node::TimeOut()
+{
+    cerr << *this << " got a timeout: ignored"<<endl;
+}
+
+
+Node *Node::GetNextHop(const Node *destination) const
+{
+}
+
+Table *Node::GetRoutingTable() const
+{
+}
+
+
+ostream & Node::Print(ostream &os) const
+{
+    os << "Node(number="<<number<<", lat="<<lat<<", bw="<<bw;
     return os;
 }
 #endif
